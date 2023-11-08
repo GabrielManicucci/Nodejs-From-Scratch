@@ -21,9 +21,6 @@ const port = 3333
 const users = []
 
 const server = http.createServer((request, response) => {
-  // response.writeHead(200, { "Content-Type": "text/html" })
-  // response.write("<h1>Hello Worl<h1/>")
-
   const { method, url, headers } = request
   console.log(method, url, headers)
 
@@ -40,8 +37,14 @@ const server = http.createServer((request, response) => {
       email: "manicucciGBR@gmail.com"
     })
 
-    return response.end("Usuário criado")
+    return response
+      .writeHead(200, { "Content-Type": "text/html" })
+      .end("Usuário criado")
   }
+
+  return response
+    .writeHead(200, { "Content-Type": "text/html" })
+    .end("<h1>Hello World<h1/>")
 })
 
 server.listen(port, () =>
