@@ -8,15 +8,40 @@ const port = 3333
 // PATCH => Atualizar a informação específica de um recurso no backend
 // DELETE => Deleter um recurso do backend
 
+// Stateful(dados armazenados localmente) - stateless(dados armazenados em nuvem - banco de dados)
+
+/* Status Code
+  100 - 200 = informativos
+  200 - 300 = mensagens de sucesso
+  300 - 400 = mensagens de redirecionamento
+  400 - 500 = client error
+  500 - 599 = server error
+*/
+
+const users = []
+
 const server = http.createServer((request, response) => {
-  response.writeHead(200, { "Content-Type": "text/html" })
-  response.write("<h1>Hello Worl<h1/>")
+  // response.writeHead(200, { "Content-Type": "text/html" })
+  // response.write("<h1>Hello Worl<h1/>")
 
-  const { method, url } = request
+  const { method, url, headers } = request
+  console.log(method, url, headers)
 
-  console.log(method, url)
+  if (method === "GET" && url === "/users") {
+    return response
+      .setHeader("Content-Type", "aplication/json")
+      .end(JSON.stringify(users))
+  }
 
-  return response.end()
+  if (method === "POST" && url === "/users") {
+    users.push({
+      id: 1,
+      name: "Gabriel Manicucci",
+      email: "manicucciGBR@gmail.com"
+    })
+
+    return response.end("Usuário criado")
+  }
 })
 
 server.listen(port, () =>
